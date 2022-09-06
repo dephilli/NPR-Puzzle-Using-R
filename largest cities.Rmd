@@ -1,0 +1,30 @@
+---
+title: "largest cities"
+author: "David Phillips"
+date: '2022-09-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Write down the name of a country and its largest city, one after the other. Hidden in this string, in consecutive letters, is another country's capital (in six letters)? What is it?
+The first country's capital and the second country's largest city share the same two starting letters.
+
+Edit: Islamabad and Istanbul.
+A: PakistAN KARAchi --> ANKARA (Turkey)
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
