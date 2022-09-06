@@ -1,0 +1,94 @@
+---
+title: "Countries of the World"
+author: "David Phillips"
+date: '2022-09-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+countries_of_the_world$Country->country
+
+output<-lapply(1:length(country),function(x){
+  a<-paste0(country[x],country)
+  
+}
+
+
+
+output<-unlist(output)
+
+output<-unique(output[nchar(output,"char")==12])
+
+output<-data.frame(output)
+
+states<-state.abb
+
+output<-stringr::str_to_upper(output$output)
+
+output[substr(output,1,2) %in% states]
+
+counts<-seq(1,12,by=2)
+
+output2<-output
+
+
+
+
+output<-output$output
+
+output2<-lapply(counts, function(x){
+  a<-output[substr(output,x,x+1) %in% states]
+  a<-data.frame(a)
+})
+
+
+Reduce(function(d1, d2) merge(d1, d2, by = "a"),
+        output2)
+
+output3<-merge(output3, output2[6])
+```
+
+Better Version 
+
+
+```{r}
+library(readr)
+
+#bring in countries
+country <- read_csv("countries of the world.csv", col_select = "Country")
+
+#upcase all the countries 
+country$Country<-stringr::str_to_upper(country$Country)
+
+#make a vector of all combined countries. 
+
+country_full<-unlist(lapply(1:length(country$Country),function(x){
+  paste0(country$Country[x],country$Country)
+}))
+
+#limit countries to exactly 12 characters 
+country_combined<-country_full[nchar(country_full,"char")==12]
+
+#Still at 3,779
+
+#let's narrow out by states 
+
+countries_with_state_abbr<-lapply(seq(1,11,by=2),function(x){
+  country_in_state<-country_combined[substr(country_combined,x,x+1) %in% state.abb]
+  country_in_state<-data.frame(country_in_state)
+})
+
+#Returns a list of dataframes to use the reduce function 
+
+Reduce(function(d1, d2) merge(d1, d2),
+        countries_with_state_abbr)
+
+gc()
+```
+
+
