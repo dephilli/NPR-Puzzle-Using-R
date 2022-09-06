@@ -9,52 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-```{r}
-countries_of_the_world$Country->country
-
-output<-lapply(1:length(country),function(x){
-  a<-paste0(country[x],country)
-  
-}
-
-
-
-output<-unlist(output)
-
-output<-unique(output[nchar(output,"char")==12])
-
-output<-data.frame(output)
-
-states<-state.abb
-
-output<-stringr::str_to_upper(output$output)
-
-output[substr(output,1,2) %in% states]
-
-counts<-seq(1,12,by=2)
-
-output2<-output
-
-
-
-
-output<-output$output
-
-output2<-lapply(counts, function(x){
-  a<-output[substr(output,x,x+1) %in% states]
-  a<-data.frame(a)
-})
-
-
-Reduce(function(d1, d2) merge(d1, d2, by = "a"),
-        output2)
-
-output3<-merge(output3, output2[6])
-```
-
-Better Version 
-
+Here it is, almost. 
 
 ```{r}
 library(readr)
