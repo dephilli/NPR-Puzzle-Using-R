@@ -16,15 +16,67 @@ Edit: Islamabad and Istanbul.
 A: PakistAN KARAchi --> ANKARA (Turkey)
 
 ```{r cars}
+library(rvest)
+url <- "https://kids.kiddle.co/List_of_countries_by_largest_and_second_largest_cities"
+country_largest <- url %>%
+  read_html() %>%
+  html_nodes(xpath='/html/body/div/div/div[2]/div[3]/div[1]/table') %>%
+  html_table()
+country_largest <- country_largest[[1]]
+
+
+#clean up a bit 
+
+country_largest<-country_largest[4:nrow(country_largest),c(1:2)]
+
+country_largest[1:2] <-
+  lapply(country_largest[1:2], stringr::str_to_upper)
+
+country_largest$combined <-
+  paste0(country_largest$`Country or territory`,
+         country_largest$`City proper`)
+
+names(country_largest) <- c("country", "city", "combined")
 
 ```
 
-## Including Plots
+## Captals 
 
-You can also embed plots, for example:
+```{r}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+
+url <- "https://en.wikipedia.org/wiki/List_of_national_capitals"
+capitals <- url %>%
+  read_html() %>%
+  html_nodes(xpath = '/html/body/div[3]/div[3]/div[5]/div[1]/table[2]') %>%
+  html_table()
+capitals <- capitals[[1]][, 1]
+
+capitals <- stringr::str_extract(capitals$`City/Town`, "[^(]+")
+
+capitals <- trimws(capitals)
+
+capitals <- stringr::str_to_upper(capitals)
+
+#country_largest$detected<-stringr::str_extract(country_largest$combined,capitals)
+
+
+solution_df <-
+  do.call(rbind, lapply(1:nrow(country_largest), function(x) {
+    out <-
+      unique(stringr::str_extract(country_largest[x, ]$combined, capitals))
+    if (length(out) > 1) {
+      out <- out[(!is.na(out))]
+    }
+    final <- data.frame(country_largest[x, ], out)
+    if (final$out != final$city & !is.na(final$out)) {
+      return(final)
+    }
+  }))
+
+country_largest[249,]
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
